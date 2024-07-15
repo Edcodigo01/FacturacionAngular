@@ -1,0 +1,125 @@
+<div style="position: relative">
+  <div id="header">
+    <button
+      type="button"
+      class="btn btn-primary float-end dropdown-toggle dropdown-toggle-split"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <span class="visually-hidden">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-start">
+      <li>
+        <a class="dropdown-item" href="#"
+          >Guardar <i class="fas fa-arrow-right"></i> Imprimir</a
+        >
+      </li>
+      <li>
+        <a class="dropdown-item" href="#"
+          >Guardar <i class="fas fa-arrow-right"></i> Nuevo</a
+        >
+      </li>
+      <li>
+        <a class="dropdown-item" href="#"
+          >Guardar <i class="fas fa-arrow-right"></i> lista ventas</a
+        >
+      </li>
+    </ul>
+    <button
+      (click)="guardarFactura()"
+      type="button"
+      class="btn btn-primary float-end"
+    >
+      <i class="fas fa-save"></i> Guardar <i class="fas fa-arrow-right"></i>
+      <i class="fas fa-print"></i>
+    </button>
+
+    <button type="button" class="btn btn-secondary float-end mr-2">
+      <i class="fas fa-plus"></i> Nueva
+    </button>
+
+    <!-- <button  type="button" class="btn btn-primary float-end"> <i class='fas fa-save'></i> Guardar </button> -->
+    <h5 class="title m-0 fadeIn">{{ title }}</h5>
+  </div>
+
+  <div class="loader-lg" *ngIf="loading">
+    <div></div>
+  </div>
+
+  <div *ngIf="recursos.length != 0">
+    <div class="row">
+      <div
+        style="padding-left: 7px; padding-right: 7px"
+        class="col-xxl-5"
+        *ngIf="innerWidth >= 1400"
+      >
+        <div class="">
+          <app-datos-cliente
+            [cliente]="cliente"
+            (sendToF)="receivedToChild($event)"
+            [clientes]="recursos.clientes"
+          ></app-datos-cliente>
+        </div>
+        <div class="card card-factura" style="overflow: hidden">
+          <app-listado-productos
+            (sendToF)="receivedToChild($event)"
+            [productos]="preproductos"
+            [innerWidth]="innerWidth"
+            [almacenes]="recursos.almacenes"
+            [categorias]="recursos.categoriasProducto"
+          ></app-listado-productos>
+        </div>
+      </div>
+      <div style="padding-left: 7px; padding-right: 7px" class="col-xxl-7">
+        <app-detalles-factura
+          [detalles]="recursos.detalles"
+          [almacenes]="recursos.almacenes"
+          [preciosadicionales]="recursos.preciosadicionales"
+          (sendToF)="receivedToChild($event)"
+        ></app-detalles-factura>
+        <div class="row">
+          <div class="float-end" class="col-xl-7">
+            <app-totales [totales]="totales"></app-totales>
+          </div>
+          <div class="float-end" class="col-xl-5">
+            <!-- <app-totales [totales]="totales"></app-totales> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-3">
+        <div class="card card-factura">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="fa-solid fa-magnifying-glass"></i> Observaciones
+            </h5>
+          </div>
+          <div class="card-body">
+            <textarea
+              [(ngModel)]="observaciones"
+              class="form-control"
+              cols="20"
+              rows="2"
+              maxlength="255"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-6"></div>
+      <div class="col-3"></div>
+    </div>
+  </div>
+  <br />
+  <br />
+
+  <!-- <div class="footer-facturar">
+    <div class="px-1">
+      <small>Filtros productos</small>
+    </div>
+    <div class="p-1">
+  
+    </div>
+  </div> -->
+</div>

@@ -1,0 +1,96 @@
+<div class="sidebar">
+  <!-- Sidebar Menu -->
+  <nav class="mt-2">
+    <ul
+      class="nav nav-pills nav-sidebar flex-column"
+      data-widget="treeview"
+      role="menu"
+      data-accordion="false"
+    >
+      <!-- <li class="nav-item principal">
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+        >
+          <i class="nav-icon fas fa-home"></i>
+          <p>Inicio</p>
+        </a>
+      </li> -->
+      <li class="nav-item principal">
+        <a routerLink="facturar" routerLinkActive="active" class="nav-link">
+         
+          <i class="fa-solid fa-file-invoice nav-icon"></i>
+          <p>Facturar</p>
+        </a>
+      </li>
+      <li class="nav-item principal">
+        <a routerLink="ventas" routerLinkActive="active" class="nav-link">
+          <i class="fa-solid fa-list-check fa-regular nav-icon"></i>
+          <p>Ventas</p>
+        </a>
+      </li>
+      <li class="nav-item principal" routerLinkActive="menu-is-opening menu-open">
+        <a class="nav-link">
+          <i class="fa-solid fa-cart-flatbed nav-icon"></i>
+          <p>
+            Inventario
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a
+              routerLink="inventario/productos"
+              routerLinkActive="active"
+              class="nav-link"
+            >
+              <i class="far fa-circle nav-icon"></i>
+              <p>Productos</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              routerLink="inventario/precios-adicionales"
+              routerLinkActive="active"
+              class="nav-link"
+            >
+              <i class="far fa-circle nav-icon"></i>
+              <p>Precios adicionales</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              routerLink="inventario/categorias"
+              routerLinkActive="active"
+              class="nav-link"
+            >
+              <i class="far fa-circle nav-icon"></i>
+              <p>Categorías</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              routerLink="inventario/almacenes"
+              routerLinkActive="active"
+              class="nav-link"
+            >
+              <i class="far fa-circle nav-icon"></i>
+              <p>Almacenes</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item principal">
+        <a routerLink="clientes" routerLinkActive="active" class="nav-link">
+         
+          <i class="fa-solid fa-file-invoice nav-icon"></i>
+          <p>Clientes</p>
+        </a>
+      </li>
+     
+    </ul>
+  </nav>
+  <!-- /.sidebar-menu -->
+</div>

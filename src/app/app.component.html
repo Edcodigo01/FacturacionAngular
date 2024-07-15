@@ -1,0 +1,57 @@
+<div *ngIf="hideN">
+  <router-outlet></router-outlet>
+</div>
+<!-- sidebar-mini layout-fixed  -->
+<body *ngIf="!hideN" class="hold-transition sidebar-mini layout-fixed" [ngClass]="{'sidebar-collapse':sidebarCollapse}" >
+  <div class="wrapper">
+    <!-- Navbar -->
+    <app-navbar [user]="user"></app-navbar>
+    <!-- /.navbar -->
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a
+        routerLink="/"
+        class="brand-link text-center p-1"
+        style="
+          height: 55.5px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        "
+      >
+        <!-- <h5 class="m-0 logo-g text-primary">FACTURACIÓN</h5> -->
+        <h5 class="m-0 brand-text text-primary">FACTURACIÓN</h5>
+
+      </a>
+
+      <!-- Sidebar -->
+      <app-sidebar [user]="user"></app-sidebar>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <div class="px-3">
+        <router-outlet></router-outlet>
+      </div>
+
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- <footer class="main-footer">
+      <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+      All rights reserved.
+      <div class="float-right d-none d-sm-inline-block">
+        <b>Version</b> 3.2.0
+      </div>
+    </footer> -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+</body>

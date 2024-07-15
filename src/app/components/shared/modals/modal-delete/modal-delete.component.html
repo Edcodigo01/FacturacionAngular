@@ -1,0 +1,29 @@
+<div class="loader-lg" *ngIf="loading">
+  <div></div>
+</div>
+
+<div class="modal-header bg-danger">
+  <h4 class="modal-title text-white">Atención!</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="sendToFather('closeModal')"
+  ></button>
+</div>
+<div class="modal-body">
+  <p class="text-center">¿Esta segur@ de eliminar este elemento?</p>
+</div>
+<div class="modal-footer">
+  <button
+    appAutofocus
+    type="button"
+    class="btn btn-secondary"
+    (click)="sendToFather('closeModal')"
+  >
+    Cancelar
+  </button>
+  <button type="button" class="btn btn-danger" (click)="eliminar()">
+    Aceptar
+  </button>
+</div>

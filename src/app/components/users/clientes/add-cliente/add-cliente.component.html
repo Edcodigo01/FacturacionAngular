@@ -1,0 +1,173 @@
+<div class="relative">
+  <div class="loader-content" *ngIf="loading">
+    <div></div>
+  </div>
+
+  <div style="min-height: 200px">
+    <form
+      *ngIf="loadedForm"
+      [formGroup]="form"
+      (ngSubmit)="store()"
+      autocomplete="off"
+    >
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <span class="me-1" *ngIf="edit?.id">
+            <i class="fas fa-pencil-alt"></i> Editar</span
+          >
+          <span class="me-1" *ngIf="!edit?.id">
+            <i class="fas fa-plus"></i> Nuevo</span
+          >
+          cliente
+        </h4>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="closeModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-4 mb-1">
+            <label for=""
+              >Razón social <span class="text-danger">*</span></label
+            >
+            <input
+              ngbAutofocus
+              formControlName="razon_social"
+              type="text"
+              class="form-control"
+              maxlength="60"
+            />
+            <div *ngIf="validate('razon_social').valid" class="text-error">
+              {{ validate("razon_social").error }}
+            </div>
+          </div>
+
+          <div class="col-4 mb-1">
+            <label for=""
+              >Tipo identificación <span class="text-danger">*</span></label
+            >
+            <select class="form-control" formControlName="tipo_ident">
+              <option value="CONSUMIDOR FINAL">CONSUMIDOR FINAL</option>
+              <option value="RUC">RUC</option>
+              <option value="CÉDULA">CÉDULA</option>
+              <option value="PASAPORTE">PASAPORTE</option>
+            </select>
+            <div *ngIf="validate('tipo_ident').valid" class="text-error">
+              {{ validate("tipo_ident").error }}
+            </div>
+          </div>
+
+          <div class="col-4 mb-1" *ngIf="is_tipo_ident('!= CONSUMIDOR FINAL')">
+            <label for=""
+              >Identificación <span class="text-danger">*</span>
+            </label>
+            <input
+              *ngIf="is_tipo_ident('RUC')"
+              formControlName="identificacion"
+              type="text"
+              class="form-control"
+              maxlength="13"
+              placeholder="0000000000000"
+            />
+            <input
+              *ngIf="is_tipo_ident('CÉDULA')"
+              formControlName="identificacion"
+              type="text"
+              class="form-control"
+              maxlength="10"
+              placeholder="0000000000"
+            />
+            <input
+              *ngIf="is_tipo_ident('PASAPORTE')"
+              formControlName="identificacion"
+              type="text"
+              class="form-control"
+              maxlength="20"
+              placeholder="00000000"
+            />
+            <div *ngIf="validate('identificacion').valid" class="text-error">
+              {{ validate("identificacion").error }}
+            </div>
+          </div>
+
+          <div class="col-4 mb-1">
+            <label for="">Nombre comercial</label>
+            <input
+              ngbAutofocus
+              formControlName="nombre_comercial"
+              type="text"
+              class="form-control"
+              maxlength="60"
+            />
+            <div *ngIf="validate('nombre_comercial').valid" class="text-error">
+              {{ validate("nombre_comercial").error }}
+            </div>
+          </div>
+
+          <div class="col-4 mb-1">
+            <label for="">Correo</label>
+            <input
+              ngbAutofocus
+              formControlName="email"
+              type="text"
+              class="form-control"
+              maxlength="60"
+            />
+            <div *ngIf="validate('email').valid" class="text-error">
+              {{ validate("email").error }}
+            </div>
+          </div>
+
+          <div class="col-4 mb-1">
+            <label for="">Teléfono</label>
+            <input
+              ngbAutofocus
+              formControlName="telefono"
+              type="text"
+              class="form-control"
+              maxlength="20"
+            />
+            <div *ngIf="validate('telefono').valid" class="text-error">
+              {{ validate("telefono").error }}
+            </div>
+          </div>
+          <div class="col-4 mb-1">
+            <label for="">Ciudad</label>
+            <input
+              ngbAutofocus
+              formControlName="ciudad"
+              type="text"
+              class="form-control"
+              maxlength="60"
+            />
+            <div *ngIf="validate('ciudad').valid" class="text-error">
+              {{ validate("ciudad").error }}
+            </div>
+          </div>
+          <div class="col-12 mb-1">
+            <label for="">Dirección</label>
+            <input
+              ngbAutofocus
+              formControlName="direccion"
+              type="text"
+              class="form-control"
+              maxlength="255"
+            />
+            <div *ngIf="validate('direccion').valid" class="text-error">
+              {{ validate("direccion").error }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="closeModal()" type="button" class="btn btn-secondary">
+          <i class="fa-regular fa-circle-xmark"></i> Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary"> <i class='fas fa-save'></i> Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

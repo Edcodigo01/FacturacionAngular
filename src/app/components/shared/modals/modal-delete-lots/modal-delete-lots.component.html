@@ -1,0 +1,61 @@
+<div class="loader-lg" *ngIf="loading">
+  <div></div>
+</div>
+
+<form [formGroup]="form" (submit)="habilitarLotes($event)">
+  <div class="modal-header bg-danger">
+    <h4 class="modal-title text-white">Atención!</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="sendToFather('closeModal')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p class="text-center text-danger title-modal">
+      ¿Esta segur@ de "eliminar de forma permanente" los elementos
+      seleccionados?
+    </p>
+    <br />
+    <p>Si acepta no podra recuperar estos elementos.</p>
+    <p class="">
+      Por favor ingrese su contraseña antes de confirmar la operación.
+    </p>
+    <div class="m-auto" style="max-width: 350px">
+      <div class="input-group">
+        <input
+          [type]="showPass ? 'text' : 'password'"
+          class="form-control"
+          formControlName="password"
+        />
+        <button
+          [ngbTooltip]="'Mostrar/ocultar contraseña'"
+          (click)="showPass = !showPass"
+          class="btn btn-secondary"
+          type="button"
+        >
+          <i class="fas" [ngClass]="showPass ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
+      <div *ngIf="validate('password').valid" class="text-error">
+        {{ validate("password").error }}
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      appAutofocus
+      type="button"
+      class="btn btn-secondary"
+      (click)="sendToFather('closeModal')"
+    >
+      <i class="fa-regular fa-circle-xmark"></i>
+      Cancelar
+    </button>
+    <button type="submit" class="btn btn-danger">
+      <i class="fas fa-check"></i>
+      Aceptar
+    </button>
+  </div>
+</form>

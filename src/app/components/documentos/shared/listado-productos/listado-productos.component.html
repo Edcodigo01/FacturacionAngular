@@ -1,0 +1,251 @@
+<div class="loader-content" *ngIf="loading">
+  <div></div>
+</div>
+
+<div class="card-header" *ngIf="!inModal">
+  <button
+    (click)="codigoBarra = ''; busquedaGeneral = ''; doFilter('')"
+    [ngbTooltip]="'Restaurar filtros'"
+    type="button"
+    class="btn btn-sm btn-secondary float-end ml-1"
+  >
+    <i class="fa-solid fa-delete-left"></i>
+  </button>
+  <button
+    (click)="codigoBarra = ''; busquedaGeneral = ''; getData()"
+    [ngbTooltip]="'Refrescar tabla'"
+    type="button"
+    class="btn btn-sm btn-secondary float-end"
+  >
+    <i class="fa-solid fa-right-left"></i>
+  </button>
+  <h5 class="card-title">
+    <i class="fa-solid fa-magnifying-glass"></i> Productos
+  </h5>
+</div>
+
+<div [ngClass]="{ 'card-body p-0': !inModal, 'modal-body': inModal }">
+  <!-- {{ innerWidth }} -->
+  <div class="p-1">
+    <div class="row">
+      <div [ngClass]="{'col-6':innerWidth > 1600,'col-12':innerWidth < 1600,}">
+        <div class="input-group input-group-sm flex-nowrap mb-1">
+          <span class="input-group-text" style="min-width: 100px">Almacén</span>
+          <ng-select
+            [appendTo]="'body'"
+            [ngClass]="'form-control p-0'"
+            [notFoundText]="'No encontrado'"
+            [items]="almacenes"
+            bindLabel="nombre"
+            bindValue="id"
+            [(ngModel)]="almacen_id"
+            [clearable]="false"
+            [ngModelOptions]="{ standalone: true }"
+            (change)="setLocale('almacen_id', almacen_id); getData()"
+          >
+          </ng-select>
+        </div>
+      </div>
+
+      <div
+        [ngClass]="{ 'col-6': innerWidth > 1600, 'col-12': innerWidth < 1600 }"
+      >
+        <div class="input-group input-group-sm flex-nowrap mb-1">
+          <span class="input-group-text" style="min-width: 100px"
+            >Categorías</span
+          >
+          <ng-select
+            [appendTo]="'body'"
+            [ngClass]="'form-control p-0'"
+            [notFoundText]="'No encontrado'"
+            [items]="categorias"
+            bindLabel="nombre"
+            bindValue="id"
+            [(ngModel)]="categoria_id"
+            [clearable]="false"
+            [ngModelOptions]="{ standalone: true }"
+            (change)="getData()"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <div
+        [ngClass]="{ 'col-6': innerWidth > 1600, 'col-12': innerWidth < 1600 }"
+      >
+        <div class="input-group input-group-sm flex-nowrap mb-1">
+          <span class="input-group-text" style="min-width: 100px"
+            >Código barra</span
+          >
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar y agregar"
+            [(ngModel)]="codigoBarra"
+            (keyup.enter)="buscarCodigoBarra()"
+          />
+          <button
+            (click)="buscarCodigoBarra()"
+            type="button"
+            class="btn btn-primary"
+          >
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div
+        [ngClass]="{ 'col-6': innerWidth > 1600, 'col-12': innerWidth < 1600 }"
+      >
+        <div class="input-group input-group-sm flex-nowrap mb-1">
+          <span class="input-group-text" style="min-width: 100px">General</span>
+          <input
+            (keyup)="doFilter($event)"
+            [(ngModel)]="busquedaGeneral"
+            type="text"
+            class="form-control"
+            placeholder="Filtrar"
+          />
+          <button
+            *ngIf="btn_borrar_busqueda"
+            type="button"
+            class="btn btn-light"
+          >
+            <i class="fas fa-backward"></i>
+          </button>
+          <button type="button" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card m-0" style="border-top: solid rgb(199, 199, 199) 1px">
+    <div class="card-body p-0" style="overflow: hidden">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="mat-elevation-z8 mat-table-hover"
+        #tabla1
+      >
+        <ng-container matColumnDef="resumen">
+          <th style="width: 20px" mat-header-cell *matHeaderCellDef>
+            <i class="fas fa-eye"></i>
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            
+          >
+            <button
+              (click)="openModal(modalDetalleProducto, element)"
+              ngbTooltip="Resumen del producto"
+              type="button"
+              class="btn btn-info btn-xs"
+            >
+              <i class="fas fa-eye"></i>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="codigo">
+          <th mat-header-cell *matHeaderCellDef>Código</th>
+          <td
+            class="cortar"
+            mat-cell
+            *matCellDef="let element; let i = index"
+            (click)="addProducto(element)"
+          >
+            {{ element.codigo }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef>Descripción</th>
+          <td
+            class="cortar"
+            mat-cell
+            *matCellDef="let element; let i = index"
+            (click)="addProducto(element)"
+          >
+            <span [ngbTooltip]="element.descripcion">
+              {{ element.descripcion }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="precio">
+          <th mat-header-cell *matHeaderCellDef>Precio</th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            (click)="addProducto(element)"
+          >
+            {{ element.precio_venta }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="stock">
+          <th mat-header-cell *matHeaderCellDef>Stock</th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            (click)="addProducto(element)"
+          >
+            {{ element.stock }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+      <div
+        class="text-center bg-white p-3"
+        *ngIf="productos.length == 0 && !loading"
+      >
+        <p class="m-0 text-grey">
+          <i class="fas fa-exclamation"></i> No se encontraron resultados.
+        </p>
+      </div>
+      <mat-paginator
+        #paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        [length]="10"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+
+<ng-template #modalDetalleProducto let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <i class="fa-solid fa-eye"></i> Detalles Producto: {{ edit.descripcion }}
+    </h5>
+  </div>
+  <div class="modal-body">
+    <span class="mr-5"><strong>Descripción:</strong> {{edit.descripcion}} </span>
+    <span class="mr-5"><strong>Código:</strong> {{edit.codigo}} </span>
+    <span class="mr-5"><strong>Graba iva:</strong> {{edit.grabaiva?'Si':'No'}} </span>
+
+    <span *ngIf="edit.grabaiva" class="mr-5"><strong>Precio sin iva:</strong> {{edit.precio_venta_sin_iva}} </span>
+    <span class="mr-5"><strong>Precio:</strong> {{edit.precio_venta}} </span>
+    <br>
+    <h6 class='mt-3 text-primary'>Almacenes y stock</h6>
+    <span class="mr-5" *ngFor="let item of edit.almacenes;"> <strong>{{getNameAlmacen(item.almacen_id)}}:</strong> {{item.cantidad}} </span>
+    
+    
+    <!-- cantidad -->
+    
+    <!-- precio_compra -->
+    <!-- porcentaje_ganancia -->
+
+    <!-- { "id": 1, "user_id": 1, "categoria_producto_id": 1, "imagenes": null, "descripcion": "Arroz torre 1 kg", "codigo": "334", "precio_compra": 70, "porcentaje_ganancia": 5, "ganancia": 3.5, "precio_venta_sin_iva": 73.5, "editar_precio": 1, "iva": 1.12, "grabaiva": 1, "precio_venta": 74.62, "deshabilitado": 0, "created_at": "2023-10-26T20:35:04.000000Z", "updated_at": "2023-10-28T18:56:31.000000Z", "producto_id": 1, "almacen_id": 1, "cantidad": 1, "nombre": "Comida", "almacenes": [ { "id": 6, "producto_id": 1, "almacen_id": 1, "cantidad": 10, "created_at": "2023-10-28T18:22:16.000000Z", "updated_at": "2023-10-28T18:22:16.000000Z" }, { "id": 7, "producto_id": 1, "almacen_id": 2, "cantidad": 2, "created_at": "2023-10-28T18:22:16.000000Z", "updated_at": "2023-10-28T18:22:16.000000Z" } ], "precioOriginal": 74.62, "descuento": 0, "tipo_precio": "Predefinido" } -->
+  </div>
+  <div class="modal-footer">
+    <button
+      appAutofocus
+      type="button"
+      class="btn btn-secondary"
+      (click)="hideModal()"
+    >
+      Cerrar
+    </button>
+  </div>
+</ng-template>

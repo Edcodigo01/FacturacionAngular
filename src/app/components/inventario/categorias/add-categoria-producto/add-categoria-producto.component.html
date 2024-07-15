@@ -1,0 +1,60 @@
+<div class="relative">
+    <div class="loader-content" *ngIf="loading">
+      <div></div>
+    </div>
+  
+    <div style="min-height: 200px">
+      <form
+        *ngIf="loadedForm"
+        [formGroup]="form"
+        (ngSubmit)="store()"
+        autocomplete="off"
+      >
+        <div class="modal-header">
+          <h4 class="modal-title">
+            <span class="me-1" *ngIf="edit?.id">
+              <i class="fas fa-pencil-alt"></i> Editar</span
+            >
+            <span class="me-1" *ngIf="!edit?.id">
+              <i class="fas fa-plus"></i> Nueva</span
+            >
+            Categoría
+          </h4>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="closeModal()"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 mb-1">
+              <label for=""
+                >Nombre: <span class="text-danger">*</span></label
+              >
+              <input
+                ngbAutofocus
+                formControlName="nombre"
+                type="text"
+                class="form-control"
+                maxlength="60"
+              />
+              <div *ngIf="validate('nombre').valid" class="text-error">
+                {{ validate("nombre").error }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="closeModal()" type="button" class="btn btn-secondary">
+            <i class="fa-regular fa-circle-xmark"></i> Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

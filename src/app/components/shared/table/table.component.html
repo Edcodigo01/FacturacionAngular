@@ -1,0 +1,264 @@
+<div class="loader-lg" *ngIf="loading">
+  <div></div>
+</div>
+
+<!-- btnLotes -->
+<div class="input-group float-end mb-2" style="max-width: 400px">
+  <span class="input-group-text"> Búsqueda rápida </span>
+  <input
+    appAutofocus
+    [(ngModel)]="busqueda"
+    class="form-control"
+    matInput
+    (keyup)="doFilter($event)"
+    placeholder=""
+    #input
+  />
+</div>
+
+<button (click)="guardarSeleccion()" [ngClass]="{ disabled: this.selected.length == 0 }" *ngIf="multiselect" class="btn btn-primary"> <i class='fas fa-save'></i> Guardar selección</button>
+
+<!-- <div class="dropdown float-start" *ngIf="btnLotes && !hideBtnLotes">
+  <a
+    [ngClass]="{ disabled: this.selected.length == 0 }"
+    class="btn btn-primary dropdown-toggle"
+    href="#"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    <i class="fas fa-list"></i> Acción selección
+  </a>
+
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <li *ngIf="url_enable_delete_lots">
+      <button
+        class="dropdown-item"
+        (click)="openModal(modalEnableLots, null, 'md')"
+      >
+        <i class="fas fa-check text-success"></i> Habilitar
+      </button>
+    </li>
+    <li *ngIf="url_enable_delete_lots">
+      <button
+        class="dropdown-item"
+        (click)="openModal(modalDeleteLots, null, 'md')"
+      >
+        <i class="fas fa-times-circle text-danger"></i> Eliminar
+      </button>
+    </li>
+  </ul>
+</div> -->
+
+<!-- *ngIf="(loaded && !footerTotales) || dataCount == 0" -->
+
+<div class="table-responsive" style="width: 100%">
+  <table
+    matSortActive="identificacion"
+    matSortStart="desc"
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z8"
+    [ngClass]="{ 'mat-table-hover': premitirSeleccion }"
+    matSort
+  >
+    <ng-container *ngFor="let c of columns" [matColumnDef]="c.field">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        [disabled]="c.field == 'select'"
+        [ngClass]="{ 'table-select': c.field == 'select' }"
+      >
+        <span *ngIf="c.field == 'select'">
+          <input
+            (change)="selectAllRow($event)"
+            type="checkbox"
+            value=""
+            [(ngModel)]="selectAllcheck"
+          />
+          <i class="fas fa-list ml-1"></i>
+        </span>
+        <span *ngIf="c.field != 'select'">{{ c.name }} </span>
+      </th>
+
+      <td
+        mat-cell
+        *matCellDef="let element"
+        style="white-space: nowrap"
+        (click)="seleccion(element,c.field)"
+      >
+        <div *ngIf="c.field == 'select'">
+          <input
+            (change)="selectRow($event)"
+            [value]="element.id"
+            type="checkbox"
+            [(ngModel)]="element.selected"
+          />
+        </div>
+
+        <div *ngIf="c.field == 'actions'">
+          <button
+            *ngFor="let a of actionsExcept(actions)"
+            [ngbTooltip]="a.tooltip"
+            (click)="sendToFather(a.function, element)"
+            type="button"
+            [class]="'me-1 btn btn-sm' + ' ' + a.class"
+          >
+            <span *ngIf="a.ico">
+              <i [class]="'fas ' + a.ico"></i>
+            </span>
+            <span *ngIf="a.nombre">
+              {{ a.nombre }}
+            </span>
+          </button>
+        </div>
+        <div  *ngIf="c.field != 'actions'">
+          <div *ngIf="c.type == 'almacenes'">
+            {{ for(element[c.field]) }}
+          </div>
+          <div *ngIf="c.type == 'array'">
+            {{ for(element[c.field]) }}
+          </div>
+          <div *ngIf="c.type == 'number'">
+            {{ formatNumber(element[c.field]) }}
+          </div>
+          <div *ngIf="c.type == 'date'">
+            {{ formatDate(element[c.field]) }}
+          </div>
+          <div *ngIf="c.type == 'dateComplete'">
+            {{ formatDate(element[c.field]) }}
+          </div>
+          <div
+            *ngIf="
+              c.type != 'number' &&
+              c.type != 'date' &&
+              c.type != 'dateComplete' &&
+              c.type != 'array'
+            "
+          >
+            {{ element[c.field] }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <!-- TABLA SUMA TOTALES -->
+  <!-- <table
+    *ngIf="loaded && footerTotales && dataCount != 0"
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z8"
+    matSort
+  >
+    <ng-container *ngFor="let c of columns" [matColumnDef]="c.field">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ c.name }}</th>
+
+      <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+        <div *ngIf="c.field == 'actions'">
+          <button
+            *ngFor="let a of actions"
+            [ngbTooltip]="a.tooltip"
+            (click)="sendToFather(a.function, element)"
+            type="button"
+            [class]="'me-1 btn btn-sm' + ' ' + a.class"
+          >
+            <span *ngIf="a.ico">
+              <i [class]="'fas ' + a.ico"></i>
+            </span>
+            <span *ngIf="a.nombre">
+              {{ a.nombre }}
+            </span>
+          </button>
+        </div>
+        <div class="" *ngIf="c.field != 'actions'">
+          <div *ngIf="c.type == 'array'">
+            {{ for(element[c.field]) }}
+          </div>
+          <div *ngIf="c.type == 'number'">
+            {{ formatNumber(element[c.field]) }}
+          </div>
+          <div *ngIf="c.type == 'date'">
+            {{ formatDate(element[c.field]) }}
+          </div>
+          <div *ngIf="c.type == 'dateComplete'">
+            {{ formatDate(element[c.field]) }}
+          </div>
+          <div
+            *ngIf="
+              c.type != 'number' &&
+              c.type != 'date' &&
+              c.type != 'dateComplete' &&
+              c.type != 'array'
+            "
+          >
+            {{ element[c.field] }}
+          </div>
+        </div>
+      </td>
+
+      <td class="font-500" mat-footer-cell *matFooterCellDef>
+        {{ sumaTotal(c) }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+  </table> -->
+</div>
+<div
+  style="border-left: 1px #cacaca solid; border-right: 1px #cacaca solid"
+  class="text-center bg-white p-3"
+  *ngIf="dataSource.data.length == 0 && !loading"
+>
+  <p class="m-0 text-grey">
+    <i class="fas fa-exclamation"></i> No se encontraron resultados.
+  </p>
+</div>
+<mat-paginator
+  #paginator
+  [pageSize]="5"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  [length]="10"
+  (page)="pageEvents($event)"
+>
+</mat-paginator>
+
+<ng-template #modalDisable let-modal>
+  <app-modal-disable
+    [url]="url_disabled"
+    [edit_id]="edit_id"
+    (sendToF)="receivedToChild($event)"
+  >
+  </app-modal-disable>
+</ng-template>
+
+<ng-template #modalDelete let-modal>
+  <app-modal-delete
+    [url]="url_delete"
+    [edit_id]="edit_id"
+    (sendToF)="receivedToChild($event)"
+  >
+  </app-modal-delete>
+</ng-template>
+
+<ng-template #modalEnableLots let-modal>
+  <app-modal-enable-lots
+    [selected]="selected"
+    [url]="url_enable_delete_lots"
+    (sendToF)="receivedToChild($event)"
+  ></app-modal-enable-lots>
+</ng-template>
+
+<ng-template #modalDeleteLots let-modal>
+  <app-modal-delete-lots
+    [selected]="selected"
+    [url]="url_enable_delete_lots"
+    (sendToF)="receivedToChild($event)"
+  ></app-modal-delete-lots>
+</ng-template>

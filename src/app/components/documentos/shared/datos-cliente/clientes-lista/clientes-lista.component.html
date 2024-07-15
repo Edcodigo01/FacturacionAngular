@@ -1,0 +1,32 @@
+<div class="loader-content" *ngIf="loading">
+  <div></div>
+</div>
+
+<div class="modal-header">
+  <h4 class="modal-title">Buscar cliente</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="closeModal()"
+  ></button>
+</div>
+<div class="modal-body">
+ 
+  <app-table
+    
+    [prebusqueda]="prebusqueda"
+    [premitirSeleccion]="true"
+    [url]="table.url"
+    [predata]="clientes"
+    [columns]="table.columns"
+   
+    (sendToF)="receivedToChild($event)"
+  >
+  </app-table>
+</div>
+<div class="modal-footer">
+  <button (click)="closeModal()" type="button" class="btn btn-secondary">
+    <i class="fa-regular fa-circle-xmark"></i> Cancelar
+  </button>
+</div>

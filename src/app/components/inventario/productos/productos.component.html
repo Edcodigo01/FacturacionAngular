@@ -1,0 +1,46 @@
+<div class="loader-content" *ngIf="loading">
+    <div></div>
+  </div>
+  
+  <div class="row mb-1">
+    <div class="col-12">
+      <button
+        (click)="openModal(modalAdd,false,'xl')"
+        type="button"
+        class="btn btn-primary float-end"
+      >
+        <i class="fas fa-plus"></i> Nuevo
+      </button>
+      <h3 class="title"> {{title}} </h3>
+    </div>
+  </div>
+
+  <app-filtros [title]="title" *ngIf="datosFiltros.length != 0" [datosFiltros]="datosFiltros" (sendToF)="receivedToChild($event)"> </app-filtros>
+
+  <!-- TABLA -->
+  <app-table
+    *ngIf="cargarTabla"
+    [filtrosstring]="table.filtros"
+    [title]="title"
+    [url]="table.url"
+    [columns]="table.columns"
+    [actions]="table.actions"
+    [url_disabled]="table.url_disabled"
+    [url_enable_delete_lots]="table.url_enable_delete_lots"
+    (sendToF)="receivedToChild($event)"
+    >
+  </app-table>
+  
+  <!-- MODAL CREATE -->
+  <ng-template #modalAdd let-modal>
+    <app-add-producto
+      [url]="table.url"
+      [edit]="edit"
+      [datosFiltros]="datosFiltros"
+      (sendToF)="receivedToChild($event)"
+    ></app-add-producto>
+  </ng-template>
+
+  
+  
+  

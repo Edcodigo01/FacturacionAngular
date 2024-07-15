@@ -1,0 +1,75 @@
+<div class="relative">
+    <div class="loader-content" *ngIf="loading">
+      <div></div>
+    </div>
+  
+    <div style="min-height: 200px">
+      <form
+        *ngIf="loadedForm"
+        [formGroup]="form"
+        (ngSubmit)="store()"
+        autocomplete="off"
+      >
+        <div class="modal-header">
+          <h4 class="modal-title">
+            <span class="me-1" *ngIf="edit?.id">
+              <i class="fas fa-pencil-alt"></i> Editar</span
+            >
+            <span class="me-1" *ngIf="!edit?.id">
+              <i class="fas fa-plus"></i> </span
+            >
+            Precio ad. productos
+          </h4>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="closeModal()"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 mb-1">
+              <label for=""
+                >Descripción: <span class="text-danger">*</span></label
+              >
+              <input
+                ngbAutofocus
+                formControlName="descripcion"
+                type="text"
+                class="form-control"
+                maxlength="60"
+              />
+              <div *ngIf="validate('descripcion').valid" class="text-error">
+                {{ validate("descripcion").error }}
+              </div>
+            </div>
+            <div class="col-12 mb-1">
+                <label for=""
+                  >% ganancia: <span class="text-danger">*</span></label
+                >
+                <input
+                  ngbAutofocus
+                  formControlName="porcentaje_ganancia"
+                  type="text"
+                  class="form-control"
+                  maxlength="60"
+                />
+                <div *ngIf="validate('porcentaje_ganancia').valid" class="text-error">
+                  {{ validate("porcentaje_ganancia").error }}
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="closeModal()" type="button" class="btn btn-secondary">
+            <i class="fa-regular fa-circle-xmark"></i> Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

@@ -1,0 +1,170 @@
+<div class="card card-factura fadeIn labels-mt-5">
+  <div class="card-header">
+    <button
+      [disabled]="!cliente?.id"
+      ngbTooltip="Restaurar a consumidor final"
+      type="button"
+      class="btn btn-secondary btn-sm float-end"
+      (click)="clienteConsumidor()"
+    >
+      <i class="fas fa-times-circle"></i>
+    </button>
+
+    <button
+      [disabled]="!cliente?.id"
+      ngbTooltip="Editar cliente seleccionado"
+      type="button"
+      class="btn btn-secondary btn-sm float-end mr-1"
+      (click)="openModal(modalAdd, cliente)"
+    >
+      <i class="fas fa-pencil-alt"></i>
+    </button>
+    <button
+      ngbTooltip="Nuevo cliente"
+      type="button"
+      class="btn btn-secondary btn-sm float-end mr-1"
+      (click)="openModal(modalAdd)"
+    >
+      <i class="fas fa-user-plus"></i>
+    </button>
+    <button
+      ngbTooltip="Listado de clientes"
+      type="button"
+      class="btn btn-secondary btn-sm float-end mr-1"
+      (click)="openModal(modalClientes)"
+    >
+      <i class="fas fa-users"></i>
+    </button>
+
+    <h5 class="card-title"><i class="fas fa-user"></i> CLIENTE</h5>
+  </div>
+  <div class="card-body p-1">
+    <form
+      *ngIf="!cliente?.id"
+      [formGroup]="form"
+      (ngSubmit)="buscarCliente($event)"
+      autocomplete="off"
+    >
+      <div class="row fadeIn">
+        <div class="col-12">
+          <div class="mr-3 float-start">
+            <label class="text-secondary">Tipo identificación:</label>
+            <p class="m-0 txt-cut">CONSUMIDOR FINAL</p>
+          </div>
+          <div class="float-start">
+            <label class="text-secondary">Identificación:</label>
+            <p class="m-0 txt-cut">9999999999999</p>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="input-group input-group-sm mt-1">
+            <span class="input-group-text">Buscar Cliente</span>
+            <input [ngClass]="{ 'border border-danger':
+            validate('busqueda').error }" formControlName="busqueda" type="text"
+            class="form-control" placeholder="R. social / n. comercial /
+            identificación / correo" maxlength="100" />
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <div *ngIf="validate('busqueda').valid" class="text-error">
+            {{ validate("busqueda").error }}
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="fadeIn" *ngIf="cliente?.id">
+      <div class="row">
+        <div class="col-12">
+          <div class="mr-3 float-start">
+            <label class="text-secondary">Razón social:</label>
+            <p class="m-0 txt-cut txt-cut">
+              {{ cliente.razon_social }}
+            </p>
+          </div>
+
+          <div class="mr-3 float-start">
+            <label class="text-secondary">Tipo Identificación:</label>
+            <p class="m-0 txt-cut">{{ cliente.tipo_ident }}</p>
+          </div>
+          <div class="mr-3 float-start">
+            <label class="text-secondary">Identificación:</label>
+            <p class="m-0 txt-cut">{{ cliente.identificacion }}</p>
+          </div>
+          <div *ngIf="cliente?.nombre_comercial" class="mr-3 float-start">
+            <label class="text-secondary">Nombre comercial:</label>
+
+            <p class="m-0 txt-cut">
+              {{ cliente.nombre_comercial }}
+            </p>
+          </div>
+          <div *ngIf="cliente?.email" class="mr-3 float-start">
+            <label class="text-secondary">Correo:</label>
+            <p class="m-0 txt-cut" *ngIf="cliente?.email">
+              {{ cliente.email }}
+            </p>
+          </div>
+          <div *ngIf="cliente?.telefono" class="mr-3 float-start">
+            <label class="text-secondary">Teléfono:</label>
+            <p class="m-0 txt-cut">
+              {{ cliente?.telefono }}
+            </p>
+          </div>
+          <div *ngIf="cliente?.ciudad" class="mr-3 float-start">
+            <label class="text-secondary">Ciudad:</label>
+            <p class="m-0 txt-cut">
+              {{ cliente.ciudad }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="cliente?.direccion" class="row" [ngbTooltip]="cliente.direccion">
+        <div class="col-12 txt-cut">
+          <label class="text-secondary">Dirección:</label>
+          <p class="m-0 txt-cut">
+            {{ cliente.direccion }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="row">
+      <div class="col-xl-3 col-lg-4">
+        <label>Tipo identificación</label>
+        <select class="form-control">
+          <option value="Consumidor final">Consumidor final</option>
+          <option value="RUC">RUC</option>
+          <option value="Cédula">Cédula</option>
+        </select>
+      </div>
+      <div class="col-xl-3 col-lg-4">
+        <label>identificación</label>
+        <select class="form-control">
+          <option value="Consumidor final">Consumidor final</option>
+          <option value="RUC">RUC</option>
+          <option value="Cédula">Cédula</option>
+        </select>
+      </div>
+    </div> -->
+  </div>
+</div>
+
+<!-- MODAL LISTA CLIENTES -->
+<ng-template #modalClientes let-modal>
+  <app-clientes-lista
+    (sendToF)="receivedToChild($event)"
+    [clientes]="clientes"
+    [prebusqueda]="prebusqueda"
+  ></app-clientes-lista>
+</ng-template>
+
+<!-- MODAL CREATE -->
+<ng-template #modalAdd let-modal>
+  <app-add-cliente
+    [url]="url_clientes"
+    [edit]="edit"
+    (sendToF)="receivedToChild($event)"
+  ></app-add-cliente>
+</ng-template>

@@ -1,0 +1,82 @@
+<div class="card card-factura fadeIn float-end">
+  <div class="card-header">
+    <h5 class="card-title"><i class="fa-solid fa-hashtag"></i> TOTALES</h5>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-5">
+        <p class="mt-1 font-500 text-right">SUBTOTAL IVA</p>
+      </div>
+      <div class="col-7">
+        <input
+          [(ngModel)]="totales.subtotal_iva"
+          type="text"
+          class="form-control form-control-sm"
+          readonly
+        />
+      </div>
+      <div class="col-5">
+        <p class="mt-1 font-500 text-right">IVA</p>
+      </div>
+      <div class="col-7">
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          [(ngModel)]="totales.iva"
+          readonly
+        />
+      </div>
+      <div class="col-5">
+        <p class="mt-1 font-500 text-right">NO IVA</p>
+      </div>
+      <div class="col-7">
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          readonly
+          [(ngModel)]="totales.no_iva"
+        />
+      </div>
+      <div class="col-5">
+        <p class="mt-1 font-500 text-right">DESCUENTO</p>
+      </div>
+      <div class="col-7">
+        <form [formGroup]="form">
+          <input
+            type="text"
+            [(ngModel)]="totales.descuento"
+            formControlName="descuento"
+            class="form-control form-control-sm"
+            
+          />
+          <div *ngIf="validate('descuento').valid" class="text-error">
+            {{ validate("descuento").error }}
+          </div> 
+          <!--  -->
+        </form>
+      </div>
+      <div class="col-5">
+        <p class="mt-1 font-500 text-right">TOTAL SIN IVA</p>
+      </div>
+      <div class="col-7">
+        <input
+          readonly
+          [(ngModel)]="totales.total_sin_iva"
+          type="text"
+          class="form-control form-control-sm"
+        />
+      </div>
+      <div class="col-5">
+        <p class="mt-1 font-500 text-right">TOTAL</p>
+      </div>
+      <div class="col-7">
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          [(ngModel)]="totales.total"
+          readonly
+        />
+      </div>
+    </div>
+  </div>
+</div>

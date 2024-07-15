@@ -1,0 +1,58 @@
+<div class="loader-lg" *ngIf="loading">
+  <div></div>
+</div>
+
+<div
+  class=""
+  style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  "
+>
+  <!-- <h4 class="card-title m-0 text-center">Iniciar sesión</h4> -->
+  <form [formGroup]="form" (ngSubmit)="login()" >
+    <div class="card" style="width: 350px">
+      <div class="card-header bg-white text-center">
+        <h4 class="mt-3 text-primary">Inicio de sesión</h4>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="">Correo</label>
+          <input
+            autocomplete="off"
+            maxlength="60"
+            formControlName="email"
+            class="form-control"
+            type="text"
+          />
+          <div *ngIf="validate('email').valid" class="text-error">
+            {{ validate("email").error }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="">Contraseña</label>
+          <input
+            maxlength="30"
+            formControlName="password"
+            class="form-control"
+            type="password"
+            autocomplete="off"
+          />
+          <div *ngIf="validate('password').valid" class="text-error">
+            {{ validate("password").error }}
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-white">
+        <div class="d-grid gap-2">
+          <button class="btn btn-lg btn-primary mx-0 btn-block" type="submit">
+            Iniciar sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,43 @@
+<div class="loader-content" *ngIf="loading">
+    <div></div>
+  </div>
+  
+  <div class="row mb-1">
+    <div class="col-12">
+      <button
+        (click)="openModal(modalAdd,false,'sm')"
+        type="button"
+        class="btn btn-primary float-end"
+      >
+        <i class="fas fa-plus"></i> Nuevo
+      </button>
+      <h3 class="title"> {{title}} </h3>
+    </div>
+  </div>
+  
+
+  
+  <!-- TABLA -->
+  <app-table
+    [title]="title"
+    [url]="table.url"
+    [columns]="table.columns"
+    [actions]="table.actions"
+    [url_delete]="table.url"
+
+    (sendToF)="receivedToChild($event)"
+    >
+  </app-table>
+  
+  <!-- MODAL CREATE -->
+  <ng-template #modalAdd let-modal>
+    <app-add-precio-adicional
+      [url]="table.url"
+      [edit]="edit"
+      (sendToF)="receivedToChild($event)"
+    ></app-add-precio-adicional>
+  </ng-template>
+  
+  
+  
+  

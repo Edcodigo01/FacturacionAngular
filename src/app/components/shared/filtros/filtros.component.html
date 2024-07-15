@@ -1,0 +1,85 @@
+<form (submit)="getFiltros($event)">
+  <div class="card">
+    <div class="card-body">
+      <!-- Todos -->
+      <div class="row">
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2">
+          <div class="input-group mb-1">
+            <span class="input-group-text">Estado:</span>
+            <select
+              [(ngModel)]="filtros.estado"
+              name="estado"
+              class="form-control"
+            >
+              <option value="Activos">Activos</option>
+              <option value="Deshabilitados">Deshabilitados</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- PRODUCTOS -->
+        <div
+          class="col-12 col-sm-6 col-lg-5 col-xl-4 col-xxl-3"
+          *ngIf="title == 'Productos'"
+        >
+          <div class="input-group mb-1">
+            <span class="input-group-text">Almacen:</span>
+            <ng-select
+              [ngClass]="'form-control p-0'"
+              [notFoundText]="'No encontrado'"
+              [items]="datosFiltros.almacenes"
+              bindLabel="nombre"
+              bindValue="id"
+              [(ngModel)]="filtros.almacen_id"
+              (change)="onChangeNgSelect($event, 'almacen_id', 'id')"
+              [ngModelOptions]="{ standalone: true }"
+            >
+            </ng-select>
+          </div>
+        </div>
+
+        <div
+          class="col-12 col-sm-6 col-lg-5 col-xl-4 col-xxl-3"
+          *ngIf="title == 'Productos'"
+        >
+          <div class="input-group mb-1">
+            <span class="input-group-text">Categoría:</span>
+            <ng-select
+              [ngClass]="'form-control p-0'"
+              [notFoundText]="'No encontrado'"
+              [items]="datosFiltros.categorias"
+              bindLabel="nombre"
+              bindValue="id"
+              [(ngModel)]="filtros.categoria_id"
+              (change)="onChangeNgSelect($event, 'categoria_id', 'id')"
+              [ngModelOptions]="{ standalone: true }"
+            >
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="col">
+          <div  style="width: 80px;">
+            <button
+            [ngbTooltip]="'Aplicar filtros'"
+            #btnfiltros
+            type="submit"
+            style="max-width: 37px"
+            class="btn btn-primary btn-n col mr-1"
+          >
+            <i class="fas fa-search"></i>
+          </button>
+          <button
+            [ngbTooltip]="'Restaurar filtros'"
+            type="submit"
+            style="max-width: 37px"
+            class="btn btn-secondary btn-n col"
+          >
+            <i class="fas fa-sync"></i>
+          </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

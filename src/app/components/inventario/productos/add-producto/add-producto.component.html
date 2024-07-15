@@ -1,0 +1,195 @@
+<div class="relative">
+  <div class="loader-content" *ngIf="loading">
+    <div></div>
+  </div>
+
+  <div style="min-height: 200px">
+    <form
+      *ngIf="loadedForm"
+      [formGroup]="form"
+      (ngSubmit)="store()"
+      autocomplete="off"
+    >
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <span class="me-1" *ngIf="edit?.id">
+            <i class="fas fa-pencil-alt"></i> Editar</span
+          >
+          <span class="me-1" *ngIf="!edit?.id">
+            <i class="fas fa-plus"></i> Nuevo</span
+          >
+          producto
+        </h4>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="closeModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-4 mb-1">
+            <label> Descripción: <span class="text-danger">*</span></label>
+            <input
+              ngbAutofocus
+              formControlName="descripcion"
+              type="text"
+              class="form-control"
+              maxlength="100"
+            />
+            <div *ngIf="validate('descripcion').valid" class="text-error">
+              {{ validate("descripcion").error }}
+            </div>
+          </div>
+
+          <div class="col-4 mb-1">
+            <label> Código: </label>
+            <input
+              formControlName="codigo"
+              type="text"
+              class="form-control"
+              maxlength="30"
+            />
+            <div *ngIf="validate('codigo').valid" class="text-error">
+              {{ validate("codigo").error }}
+            </div>
+          </div>
+ 
+          <div class="col-2 mb-1">
+            <label> Precio compra: <span class="text-danger">*</span></label>
+            <input
+              formControlName="precio_compra"
+              type="text"
+              class="form-control"
+              maxlength="20"
+            />
+            <div *ngIf="validate('precio_compra').valid" class="text-error">
+              {{ validate("precio_compra").error }}
+            </div>
+          </div>
+
+          <div class="col-xl-2 col-lg-2 mb-1">
+            <label> % ganancia: <span class="text-danger">*</span> </label>
+            <input
+              formControlName="porcentaje_ganancia"
+              type="text"
+              class="form-control"
+              maxlength="3"
+            />
+            <div
+              *ngIf="validate('porcentaje_ganancia').valid"
+              class="text-error"
+            >
+              {{ validate("porcentaje_ganancia").error }}
+            </div>
+          </div>
+          <div class="col-xl-2 col-lg-2 mb-1">
+            <label> Precio venta: <span class="text-danger">*</span> </label>
+            <input
+              readonly
+              formControlName="precio_venta_sin_iva"
+              type="text"
+              class="form-control"
+              maxlength="20"
+            />
+            <div
+              *ngIf="validate('precio_venta_sin_iva').valid"
+              class="text-error"
+            >
+              {{ validate("precio_venta_sin_iva").error }}
+            </div>
+          </div>
+          <div class="col-xl-2 col-lg-2 mb-1">
+            <label> Precio total: <span class="text-danger">*</span> </label>
+            <input
+              readonly
+              formControlName="precio_venta"
+              type="text"
+              class="form-control"
+              maxlength="20"
+            />
+            <div *ngIf="validate('precio_venta').valid" class="text-error">
+              {{ validate("precio_venta").error }}
+            </div>
+          </div>
+
+          <div class="col-4 mb-1">
+            <label> Categoría: <span class="text-danger">*</span></label>
+            <ng-select
+              [ngClass]="'form-control p-0'"
+              [notFoundText]="'No encontrado'"
+              [items]="datosFiltros.categorias"
+              bindLabel="nombre"
+              bindValue="id"
+              formControlName="categoria_producto_id"
+            >
+            </ng-select>
+            <div
+              *ngIf="validate('categoria_producto_id').valid"
+              class="text-error"
+            >
+              {{ validate("categoria_producto_id").error }}
+            </div>
+          </div>
+          <div class="col-4 my-1">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                formControlName="grabaiva"
+              />
+              <label class="form-check-label" for="flexCheckChecked">
+                Graba iva
+              </label>
+            </div>
+          </div>
+        </div>
+       
+        <label class="mt-2">Almacenes</label>
+        <div class="row">
+          <div
+            class="col-4"
+            *ngFor="let a of datosFiltros.almacenes; let i = index"
+          >
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [formControlName]="'almacen_' + a.id"
+              />
+              <label class="form-check-label" for="flexCheckChecked">
+                {{ a.nombre }}
+              </label>
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Cantidad:</span>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                [formControlName]="'cantidad_' + a.id"
+                maxlength="10"
+              />
+            </div>
+
+            <div *ngIf="validate('cantidad_' + a.id).valid" class="text-error">
+              {{ validate("cantidad_" + a.id).error }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="closeModal()" type="button" class="btn btn-secondary">
+          <i class="fa-regular fa-circle-xmark"></i> Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
