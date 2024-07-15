@@ -1,2 +1,2 @@
 # FacturacionAngular
-Frontend de sistema de facturación, Ver demo en: https://demo-facturacion-node.sapienciaweb.com/iniciar-sesion
+Frontend de sistema de facturación, hecho de forma individual por mi persona. Ver demo en: https://demo-facturacion-node.sapienciaweb.com/iniciar-sesion
